@@ -1,0 +1,40 @@
+Toolbox Notes
+-------------
+
+Functions:
+	1. Save reuseable snippets of code in db
+	2. Search for finding code snippets
+	3. CLI and GUI
+	4. Analyitics for tool viewing
+		- improve search with reccomendation 
+
+Toolbox (Dev Web App)
+Why it's cool?
+Developed productivity application for developers to promote good practices in code focusing on improving code reusability, testing, documentation
+Dashboard for data usage promoting modular design for written programs
+Allows developers to have their own hall of fame of code that they’re most proud of.
+Show off relatable depth of knowledge try to include metrics for algos
+
+    I wanted the user to be able to reminise about past code they've written like going through an old tool box, nastelgic and useful.
+    Nastelgic:
+        Hall of fame:
+            - need user easy way of ranking (if possible tracking) code
+    Useful:
+        Portable:
+            Cloud storage: Free version of cloud providers, do the math to figure out costs
+    
+Features:
+    1. Code text storage
+    2. Code Retrieval
+    3. Data Analytics
+    4. Rating system (Hall of Fame)
+    5. Test Code storage
+    7. Test Code Coverage
+    8. Code Notes
+
+    Idea networking aspect where users can share code snippets.
+
+    Custom Animations and Search result views for results less than a certain amount.
+    condintionaly render search results instead of pinboard if recieving results
+    dynamically render filter modules into filter bar based on screen size
+    Add infinite scroll logic to search results

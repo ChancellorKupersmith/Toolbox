@@ -63,7 +63,8 @@ export const TitleInput = props => {
       <label className="max-w-xs label">
         <span className="text-lg tracking-wide font-bold text-primary-focus">Title:</span>
       </label>
-      <input 
+      <input
+        id={props.id}
         type="text"
         className="input input-ghost text-left w-full"
         placeholder={props.placeholder}

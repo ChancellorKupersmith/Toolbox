@@ -88,11 +88,12 @@ export const TagList = props => {
   let i = 0;
   for(const tag of props.tags){
     tagElements.push(
-      <div id={`tag-${i}`} className="badge gap-1 flex">
+      <div key={`tag-${i}`} className="badge gap-1 flex">
         <a>{tag}</a>
         <div onClick={()=>props.deleteTag(tag)} className="text-error">x</div>
       </div>
     );
+    i++;
   }
   return <div className="flex flex-wrap m-2 max-h-28 overflow-y-auto">{tagElements}</div>;
 };

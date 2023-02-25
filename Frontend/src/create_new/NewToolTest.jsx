@@ -14,7 +14,7 @@ const TestInput = props => {
   const [newTestTitle, updateNewTestTitle] = useState(undefined);
 
   const changeTestContent = () => {
-    const newTest = document.getElementById('new-test-input').value;
+    const newTest = document.getElementById(props.contentId).value;
     newTest === '' ? updateNewTestContent(undefined) : updateNewTestContent(newTest);
   }
 
@@ -64,13 +64,13 @@ const TestInput = props => {
       </div>
       {/* Card Contents */}
       <div id="tests-content" className="collapse-content border-l border-r border-black rounded-b-md"> 
-        <div className="card h-96">
+        <div className="card">
           <div className="basis-5/6 overflow-auto">
             {
               showCreateTest &&
               <div>
-                <TitleInput title={newTestTitle} stateCallback={updateNewTestTitle} placeholder="Test Name"/>
-                <TextAreaInputNew textAreaId="new-test-input" stateCallback={changeTestContent} placeholder="Tests Code..."/>
+                <TitleInput id={props.titleId} title={newTestTitle} stateCallback={updateNewTestTitle} placeholder="Test Name"/>
+                <TextAreaInputNew textAreaId={props.contentId} stateCallback={changeTestContent} placeholder="Tests Code..."/>
               </div>
             }
             {tests}

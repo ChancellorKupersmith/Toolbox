@@ -11,6 +11,15 @@ export const LikeButton = props => {
   );
 }
 
+export const SaveButton = props => {
+
+  return(
+    <button onClick={props.stateCallback} className={`btn ${props.saveDisabled ? 'btn-disabled' : 'btn-primary'}`}>Save</button>
+  );
+}
+
+export const EditButton = props => <button>Edit</button>;
+
 export const Toggle = props =>
   <div className="form-control w-52">
     <label className="cursor-pointer label flex justify-between w-full">

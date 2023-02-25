@@ -8,6 +8,12 @@ import BackButton, { HomeButton } from "../utils/Buttons"
 import NewToolPage from "../create_new/NewToolPage";
 
 const SearchPage = props => {
+  /* !!! TODO !!!
+   * 1. Search Results Navigation
+   * 2. Search Result Double Click To Open
+   * 3. Backend Funcs
+   */
+  
   /* Components
    * - Input
    * - New Entry
@@ -23,17 +29,17 @@ const SearchPage = props => {
    * {
    *  title: "",
    *  description: "",
-   *  code: "",
+   *  code: "FILE_PATH",
    *  timestamp: Date,
    *  code_coverage: Number,
    *  example: "",
    *  liked: Bool,
-   *  tests: [],
+   *  tests: ['FILE_PATH'],
    *  tags: Set,
    *  times_used: Number
    * }
    */
-  // !!! TODO: !!!
+
   const mockToolObj = {
     title: "Tool Title",
     description: 'tool desc',
@@ -52,7 +58,7 @@ const SearchPage = props => {
 
 
   const resultElements = results.map((tool, index)=>
-   <ToolListElement id={`search-result-${index}`} tool={tool} resultIndex={index} selectTool={props.selectTool} changePage={props.changePage}/>
+   <ToolListElement key={`search-result-${index}`} tool={tool} resultIndex={index} selectTool={props.selectTool} changePage={props.changePage}/>
   );
 
   return (

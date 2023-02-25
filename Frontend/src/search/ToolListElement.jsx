@@ -8,7 +8,7 @@ const ToolListElement = props => {
     props.changePage('tool');
   }
   return (
-    <li id={`tool-list-element-${props.resultIndex}`}>
+    <li>
       <ToolListElementMinimized tool={props.tool} resultIndex={props.resultIndex} openTool={openTool}/>
     </li>
   );

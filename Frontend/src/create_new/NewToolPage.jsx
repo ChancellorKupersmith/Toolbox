@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
+import TextAreaInputNew, { TextAreaInputEdit, TitleInput } from "../utils/Inputs";
+import TestInput from "./NewToolTest";
 const NewToolPage = props => {
+  /* !!! TODO !!!
+   * 1. Tests
+   * 2. Tags
+   * 3. Liked
+   * 4. Backend Funcs
+   */
   const [saveDisabled, updateSaveDisable] = useState(true);
   const [title, updateTitle] = useState(undefined);
   const [code, updateCode] = useState(undefined);
   const [desc, updateDesc] = useState(undefined);
   const [example, updateExample] = useState(undefined);
-  const [codeCoverage, updateCodeCoverage] = useState(0);
   const [liked, updateLiked] = useState(false);
-  const [tests, updateTests] = useState([]);
+  const [tests, updateTests] = useState([{title: 'Test Title', content: 'test content'}, {title: 'test title 1', content: 'test content...'}]);
   const [tags, updateTags] = useState(new Set());
 
   // Only allows tool to be saved if both title and code requirements filled
@@ -17,9 +24,8 @@ const NewToolPage = props => {
     // TODO: send post request with new tool data
   }
 
-  const changeTitle = event => event.target.value === '' ? updateTitle(undefined) : updateTitle(event.target.value);
 
-  //Not using events for following change functions to enable clear functionality
+  //Not using events for triggering following change functions to enable clear functionality
   const changeCode = () => {
     const newCode = document.getElementById('code-input').value;
     newCode === '' ? updateCode(undefined) : updateCode(newCode);
@@ -39,10 +45,10 @@ const NewToolPage = props => {
     <label htmlFor="new-tool-page" className="modal cursor-pointer">
       <label htmlFor="" className="modal-box relative max-w-none">
         <button onClick={saveNewTool} className={`btn ${saveDisabled ? 'btn-disabled' : 'btn-primary'} w-full`}>Save</button>
-        <TitleInput title={title} changeTitle={changeTitle}/>
-        <TextAreaInput type="Code:" code={code} changeCode={changeCode}/>
-        <TextAreaInput type="Description:" desc={desc} changeDesc={changeDesc}/>
-        <TextAreaInput type="Example:"example={example} changeEx={changeExample}/>
+        <TitleInput title={title} stateCallback={updateTitle} placeholder="Name of Tool"/>
+        <TextAreaType type="Code" changeCode={changeCode}/>
+        <TextAreaType type="Description" changeDesc={changeDesc}/>
+        <TextAreaType type="Example" changeEx={changeExample}/>
         <TestInput tests={tests} updateTests={updateTests}/>
         <TagsInput tags={tags} updateTags={updateTags}/>
       </label>
@@ -51,124 +57,60 @@ const NewToolPage = props => {
   );
 };
 
-const TitleInput = props =>
-  <div className="m-1 flex items-center">
-    <label className="max-w-xs label">
-      <span className="text-lg tracking-wide font-bold text-primary-focus">Title:</span>
-    </label>
-    <input 
-      type="text"
-      className="input input-ghost text-left w-full"
-      placeholder="Name of Tool"
-      onChange={props.changeTitle}
-    />
-  </div>;
-
-const TextAreaInput = props => {
-  const [open, updateOpen] = useState(props.type === 'Code');
+const TextAreaType = props => {
+  const [expanded, updateExpanded] = useState(false);
+  const isExpanded = () => {
+    const typeContent = document.getElementById(`textarea-type-content-${props.type}`);
+    updateExpanded(window.getComputedStyle(typeContent).maxHeight === 'none');
+  }
 
   const content = () => {
     switch (props.type) {
-      case 'Code:':
-        return <CodeInput code={props.code} changeCode={props.changeCode}/>
-      case 'Description:':
-        return <DescInput desc={props.desc} changeDesc={props.changeDesc}/>
-      case 'Example:':
-        return <ExampleInput example={props.example} changeEx={props.changeEx}/>
+      case 'Code':
+        return <TextAreaInputNew textAreaId={'code-input'} stateCallback={props.changeCode} placeholder="Instructions..."/>
+      case 'Description':
+        return <TextAreaInputNew textAreaId={'desc-input'} stateCallback={props.changeDesc} placeholder="What does your tool do? Anything to look out for?"/>
+      case 'Example':
+        return <TextAreaInputNew textAreaId={'ex-input'} stateCallback={props.changeEx} placeholder="Show tool in action for better understanding of context..."/>
       default:
         return <div>Error reading tool content</div>;
     }
   }
 
   return (
-    <div className="collapse"> 
+    <div onClick={isExpanded} className="collapse"> 
       <input type="checkbox" className="peer"/> 
-      <div className={`collapse-title border-t border-l border-r border-black rounded-t-md card-title`}>
+      <div className="collapse-title border-t border-l border-r rounded-t-md border-black card-title">
         {/* Card Title */}
         {props.type}
       </div>
-      <div className="collapse-content border-l border-r border-black rounded-b-md"> 
+      {/* Card Content */}
+      <div id={`textarea-type-content-${props.type}`} className={`collapse-content ${expanded ? 'border-l border-r border-b rounded-b-md border-black' : ''}`}> 
         {content()}
       </div>
     </div>
   );
-};
-
-const CodeInput = props => {
-  const clear = () => {
-    const codeInput = document.getElementById('code-input');
-    codeInput.value = '';
-    props.changeCode();
-  }
-
-  return (
-    <div className="card h-96">
-      <div className="mb-2 flex justify-end">
-        <button onClick={clear} className="btn btn-square btn-outline w-full">Clear</button>
-      </div>
-      <textarea
-        id="code-input"
-        onChange={props.changeCode}
-        rows={9}
-        className="mt-1 textarea textarea-bordered textarea-lg w-full max-w-5xl h-fit bg-transparent"
-        placeholder="Instructions..."
-      ></textarea>
-    </div>
-  );
-};
-
-const DescInput = props => {
-  const clear = () => {
-    const descInput = document.getElementById('desc-input');
-    descInput.value = '';
-    props.changeDesc();
-  }
-
-  return (
-    <div className="card h-96">
-      <div className="mb-2 flex justify-end">
-        <button onClick={clear} className="btn btn-square btn-outline w-full">Clear</button>
-      </div>
-      <textarea
-        id="desc-input"
-        onChange={props.changeDesc}
-        rows={9}
-        className="mt-1 textarea textarea-bordered textarea-lg w-full max-w-5xl h-fit bg-transparent"
-        placeholder="What does your tool do? Anything to look out for?"
-      ></textarea>
-    </div>
-  );
 }
 
-const ExampleInput = props => {
-  const clear = () => {
-    const exInput = document.getElementById('ex-input');
-    exInput.value = '';
-    props.changeEx();
+
+const TagsInput = props => {
+  const [expanded, updateExpanded] = useState(false);
+  const isExpanded = () => {
+    const tagsContent = document.getElementById('tags-content');
+    updateExpanded(window.getComputedStyle(tagsContent).maxHeight === 'none');
   }
 
   return (
-    <div className="card h-96">
-      <div className="mb-2 flex justify-end">
-        <button onClick={clear} className="btn btn-square btn-outline w-full">Clear</button>
+    <div onClick={isExpanded} className="collapse"> 
+      <input type="checkbox" className="peer"/> 
+      {/* Card Title */}
+      <div className={`collapse-title ${expanded ? 'border-t border-l border-r rounded-t-md' : 'border rounded-md'} border-black card-title`}>Tags</div>
+      {/* Card Content */}
+      <div id="tags-content" className={`collapse-content ${expanded ? 'border-l border-r border-b rounded-b-md border-black' : ''}`}> 
+        
       </div>
-      <textarea
-        id="ex-input"
-        onChange={props.changeEx}
-        rows={9}
-        className="mt-1 textarea textarea-bordered textarea-lg w-full max-w-5xl h-fit bg-transparent"
-        placeholder="Show tool in action for better understanding of context..."
-      ></textarea>
     </div>
   );
-};
-
-const TestInput = props => {
-  return <div></div>;
-};
-
-const TagsInput = props => {
-  return <div></div>;
 };
 
 export default NewToolPage;
